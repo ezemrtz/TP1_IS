@@ -17,6 +17,7 @@ public class TiendaTest
         
         Assert.NotNull(productoEncontrado);  
     }
+
     [Fact]
     public void BuscarProducto_EncuentraProductoCorrecto()
     {
@@ -35,6 +36,26 @@ public class TiendaTest
         Assert.Equal(producto.Precio, productoEncontrado.Precio);
         Assert.Equal(producto.Categoria, productoEncontrado.Categoria);
     }
+
+    [Fact]
+    public void BuscarProducto_NoEncuentraProducto()
+    {
+        string nombre = "Manzana";
+        double precio = 500;
+        string categoria = "Fruta";
+        Producto producto = new Producto(nombre, precio, categoria);
+
+        Tienda tienda = new Tienda();
+        tienda.agregar_producto(producto);
+
+        string nombreBuscar = "Pera";
+
+        var productoEncontrado = tienda.buscar_producto(nombreBuscar);
+        
+        Assert.Null(productoEncontrado);
+    
+    }
+    
     [Fact]
     public void EliminarProducto_EliminaProductoCorrecto()
     {
