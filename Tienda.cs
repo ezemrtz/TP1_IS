@@ -13,7 +13,8 @@ public class Tienda{
         {
             if(producto.Nombre == nombre) return producto;
         }
-        return null;
+        throw new Exception("Producto no encontrado");
+
     }
     public bool eliminar_producto(string nombre){
         foreach (var producto in this.inventario)
@@ -23,6 +24,6 @@ public class Tienda{
                 return true;
             }
         }
-        return false;
+        throw new Exception("No se elimino el producto");
     }
 }

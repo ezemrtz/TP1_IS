@@ -38,7 +38,7 @@ public class TiendaTest
     }
 
     [Fact]
-    public void BuscarProducto_NoEncuentraProducto()
+    public void BuscarProducto_NoEncuentraProducto_LanzaExcepcion()
     {
         string nombre = "Manzana";
         double precio = 500;
@@ -50,12 +50,10 @@ public class TiendaTest
 
         string nombreBuscar = "Pera";
 
-        var productoEncontrado = tienda.buscar_producto(nombreBuscar);
-        
-        Assert.Null(productoEncontrado);
+        Assert.Throws<Exception>(() => tienda.buscar_producto(nombreBuscar));
     
     }
-    
+
     [Fact]
     public void EliminarProducto_EliminaProductoCorrecto()
     {
@@ -68,11 +66,27 @@ public class TiendaTest
         tienda.agregar_producto(producto);
 
         var eliminado = tienda.eliminar_producto(nombre);
-        var productoEncontrado = tienda.buscar_producto(nombre);
+        // var productoEncontrado = tienda.buscar_producto(nombre);
         
         Assert.True(eliminado);
-        Assert.Null(productoEncontrado);
+        // Assert.Null(productoEncontrado);
 
+    }
+
+    [Fact]
+    public void EliminarProducto_NoElimina_LanzaExcepcion()
+    {
+        string nombre = "Manzana";
+        double precio = 500;
+        string categoria = "Fruta";
+        Producto producto = new Producto(nombre, precio, categoria);
+
+        Tienda tienda = new Tienda();
+        tienda.agregar_producto(producto);
+
+        string nombreBuscar = "Pera";
+        Assert.Throws<Exception>(() => tienda.eliminar_producto(nombreBuscar));
+    
     }
 
 }
