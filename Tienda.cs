@@ -26,4 +26,10 @@ public class Tienda{
         }
         throw new Exception("No se elimino el producto");
     }
+
+    public void aplicar_descuento(string nombre, int descuento){
+        Producto producto = buscar_producto(nombre);
+        if (descuento < 0 || descuento > 100) throw new Exception("Porcentaje invalido");
+        producto.actualizar_precio(producto.Precio - producto.Precio * descuento / 100);
+    }
 }
