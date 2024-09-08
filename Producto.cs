@@ -16,7 +16,7 @@ public class Producto{
     public double Precio { get => precio; set => precio = value; }
     public string Categoria { get => categoria; set => categoria = value; }
 
-    public void actualizar_precio(double nuevoPrecio){
+    public virtual void actualizar_precio(double nuevoPrecio){
         if (nuevoPrecio < 0) throw new Exception("Precio negativo");
         this.precio = nuevoPrecio;
     }
