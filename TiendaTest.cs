@@ -1,5 +1,6 @@
 namespace TP1;
 using Clases;
+using Moq;
 public class TiendaTest
 {
     [Fact]
@@ -61,15 +62,12 @@ public class TiendaTest
         double precio = 500;
         string categoria = "Fruta";
         Producto producto = new Producto(nombre, precio, categoria);
-
         Tienda tienda = new Tienda();
-        tienda.agregar_producto(producto);
 
+        tienda.agregar_producto(producto);
         var eliminado = tienda.eliminar_producto(nombre);
-        // var productoEncontrado = tienda.buscar_producto(nombre);
         
         Assert.True(eliminado);
-        // Assert.Null(productoEncontrado);
 
     }
 
@@ -89,4 +87,19 @@ public class TiendaTest
     
     }
 
+    [Fact]
+    public void AplicarDescuento_CalculaCorrectamenteDescuento()
+    {
+        string nombreProducto = "Manzana";
+        double precioProducto = 1000;
+        string categoria = "Fruta";
+        int porcentajeDescuento = 10;
+        var mockProducto = new Mock<Producto>(nombreProducto, precioProducto, categoria); // Creo el mock de producto
+        var tienda = new Tienda();
+
+        tienda.agregar_producto(mockProducto.Object); // Agrego el producto simulado en la tienda
+        tienda.aplicar_descuento(nombreProducto, porcentajeDescuento);
+
+        mockProducto.Verify(p => p.actualizar_precio(900), Times.Once); // Verifico que el metodo actualizar_precio fue llamado con el argumento correcto (precio con descuento aplicado) una sola vez
+    }
 }
