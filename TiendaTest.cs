@@ -1,20 +1,20 @@
 namespace TP1;
 using Clases;
 using Moq;
-public class TiendaTest
+public class TiendaTest : IClassFixture<TiendaFixture>
 {
+    private TiendaFixture fixture;
+
+    public TiendaTest(TiendaFixture fixture){
+        this.fixture = fixture;
+    }
+
     [Fact]
     public void AgregarProducto_AgregadoCorrectamente()
     {
-        string nombre = "Manzana";
-        double precio = 500;
-        string categoria = "Fruta";
-        Producto producto = new Producto(nombre, precio, categoria);
-
-        Tienda tienda = new Tienda();
-        tienda.agregar_producto(producto);
-
-        var productoEncontrado = tienda.buscar_producto(nombre);
+        
+        fixture.Tienda.agregar_producto(new Producto("Queso", 1000, "Lacteo"));
+        var productoEncontrado = fixture.Tienda.buscar_producto("Queso");
         
         Assert.NotNull(productoEncontrado);  
     }
@@ -22,36 +22,20 @@ public class TiendaTest
     [Fact]
     public void BuscarProducto_EncuentraProductoCorrecto()
     {
-        string nombre = "Manzana";
-        double precio = 500;
-        string categoria = "Fruta";
-        Producto producto = new Producto(nombre, precio, categoria);
-
-        Tienda tienda = new Tienda();
-        tienda.agregar_producto(producto);
-
-        var productoEncontrado = tienda.buscar_producto(nombre);
+        var productoEncontrado = fixture.Tienda.buscar_producto("Manzana");
         
         Assert.NotNull(productoEncontrado);
-        Assert.Equal(producto.Nombre, productoEncontrado.Nombre);
-        Assert.Equal(producto.Precio, productoEncontrado.Precio);
-        Assert.Equal(producto.Categoria, productoEncontrado.Categoria);
+        Assert.Equal("Manzana", productoEncontrado.Nombre);
+        Assert.Equal(1000, productoEncontrado.Precio);
+        Assert.Equal("Fruta", productoEncontrado.Categoria);
     }
 
     [Fact]
     public void BuscarProducto_NoEncuentraProducto_LanzaExcepcion()
     {
-        string nombre = "Manzana";
-        double precio = 500;
-        string categoria = "Fruta";
-        Producto producto = new Producto(nombre, precio, categoria);
-
-        Tienda tienda = new Tienda();
-        tienda.agregar_producto(producto);
-
         string nombreBuscar = "Pera";
 
-        Assert.Throws<Exception>(() => tienda.buscar_producto(nombreBuscar));
+        Assert.Throws<Exception>(() => fixture.Tienda.buscar_producto(nombreBuscar));
     
     }
 
@@ -59,13 +43,8 @@ public class TiendaTest
     public void EliminarProducto_EliminaProductoCorrecto()
     {
         string nombre = "Manzana";
-        double precio = 500;
-        string categoria = "Fruta";
-        Producto producto = new Producto(nombre, precio, categoria);
-        Tienda tienda = new Tienda();
-
-        tienda.agregar_producto(producto);
-        var eliminado = tienda.eliminar_producto(nombre);
+        
+        var eliminado = fixture.Tienda.eliminar_producto(nombre);
         
         Assert.True(eliminado);
 
@@ -74,16 +53,9 @@ public class TiendaTest
     [Fact]
     public void EliminarProducto_NoElimina_LanzaExcepcion()
     {
-        string nombre = "Manzana";
-        double precio = 500;
-        string categoria = "Fruta";
-        Producto producto = new Producto(nombre, precio, categoria);
-
-        Tienda tienda = new Tienda();
-        tienda.agregar_producto(producto);
-
         string nombreBuscar = "Pera";
-        Assert.Throws<Exception>(() => tienda.eliminar_producto(nombreBuscar));
+
+        Assert.Throws<Exception>(() => fixture.Tienda.eliminar_producto(nombreBuscar));
     
     }
 
