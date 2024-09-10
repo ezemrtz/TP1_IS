@@ -32,4 +32,15 @@ public class Tienda{
         if (descuento < 0 || descuento > 100) throw new Exception("Porcentaje invalido");
         producto.actualizar_precio(producto.Precio - producto.Precio * descuento / 100);
     }
+
+    public double calcular_total_carrito(List<string> carrito){
+        double total = 0;
+        foreach (var nombreProducto in carrito)
+        {
+            var producto = inventario.Find(p => p.Nombre == nombreProducto);
+            if (producto == null) throw new Exception("Producto inexistente");
+            total += producto.Precio;
+        }
+        return total;
+    }
 }

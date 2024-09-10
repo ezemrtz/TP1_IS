@@ -74,4 +74,22 @@ public class TiendaTest : IClassFixture<TiendaFixture>
 
         mockProducto.Verify(p => p.actualizar_precio(900), Times.Once); // Verifico que el metodo actualizar_precio fue llamado con el argumento correcto (precio con descuento aplicado) una sola vez
     }
+
+    [Fact]
+    public void CalcularTotalCarrito_FlujoCompleto_RetornaValorCorrecto(){
+
+        List<string> carrito = new();
+
+        fixture.Tienda.agregar_producto(new("Puerta", 6000, "Mueble"));
+        carrito.Add(fixture.Tienda.buscar_producto("Manzana").Nombre);
+        carrito.Add(fixture.Tienda.buscar_producto("Martillo").Nombre);
+        carrito.Add(fixture.Tienda.buscar_producto("Kiwi").Nombre);
+
+        fixture.Tienda.eliminar_producto("Puerta");
+        fixture.Tienda.aplicar_descuento("Manzana", 20);
+        var total = fixture.Tienda.calcular_total_carrito(carrito);
+        
+        Assert.Equal(6500, total);
+        
+    }
 }
