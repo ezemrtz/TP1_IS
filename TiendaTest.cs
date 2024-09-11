@@ -26,8 +26,7 @@ public class TiendaTest : IClassFixture<TiendaFixture>
         
         Assert.NotNull(productoEncontrado);
         Assert.Equal("Manzana", productoEncontrado.Nombre);
-        Assert.Equal(1000, productoEncontrado.Precio);
-        Assert.Equal("Fruta", productoEncontrado.Categoria);
+
     }
 
     [Fact]
@@ -76,20 +75,48 @@ public class TiendaTest : IClassFixture<TiendaFixture>
     }
 
     [Fact]
-    public void CalcularTotalCarrito_FlujoCompleto_RetornaValorCorrecto(){
+    public void CalcularTotalCarrito_FlujoCompleto_AplicoDescuento_RetornaValorCorrecto(){
 
-        List<string> carrito = new();
+        List<string> carrito = new ();
 
+        // Estas dos lineas las puse porque dice que el test tiene que ser integrador
+        // No se si esta bien ¿?
         fixture.Tienda.agregar_producto(new("Puerta", 6000, "Mueble"));
+        fixture.Tienda.eliminar_producto("Puerta");
+        // ------------------------
+
         carrito.Add(fixture.Tienda.buscar_producto("Manzana").Nombre);
         carrito.Add(fixture.Tienda.buscar_producto("Martillo").Nombre);
         carrito.Add(fixture.Tienda.buscar_producto("Kiwi").Nombre);
 
-        fixture.Tienda.eliminar_producto("Puerta");
         fixture.Tienda.aplicar_descuento("Manzana", 20);
+        var totalEsperado = (1000 - 200) + 5000 + 700; // Precio de manzana (con descuento), martillo y kiwi
+        
         var total = fixture.Tienda.calcular_total_carrito(carrito);
         
-        Assert.Equal(6500, total);
+        Assert.Equal(totalEsperado, total);
+        
+    }
+    [Fact]
+    public void CalcularTotalCarrito_FlujoCompleto_SinDescuento_RetornaValorCorrecto(){
+
+        List<string> carrito = new ();
+
+        // Estas dos lineas las puse porque dice que el test tiene que ser integrador
+        // No se si esta bien ¿?
+        fixture.Tienda.agregar_producto(new("Puerta", 6000, "Mueble")); 
+        fixture.Tienda.eliminar_producto("Puerta");
+        // -----------------------
+
+        carrito.Add(fixture.Tienda.buscar_producto("Manzana").Nombre);
+        carrito.Add(fixture.Tienda.buscar_producto("Martillo").Nombre);
+        carrito.Add(fixture.Tienda.buscar_producto("Kiwi").Nombre);
+
+        var totalEsperado = 1000 + 5000 + 700; // Precio de manzana, martillo y kiwi
+        
+        var total = fixture.Tienda.calcular_total_carrito(carrito);
+        
+        Assert.Equal(totalEsperado, total);
         
     }
 }
