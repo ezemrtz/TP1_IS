@@ -82,15 +82,17 @@ public class TiendaTest : IClassFixture<TiendaFixture>
         // Estas dos lineas las puse porque dice que el test tiene que ser integrador
         // No se si esta bien ¿?
         fixture.Tienda.agregar_producto(new("Puerta", 6000, "Mueble"));
+        fixture.Tienda.agregar_producto(new("Mesa", 5000, "Mueble"));
         fixture.Tienda.eliminar_producto("Puerta");
         // ------------------------
 
         carrito.Add(fixture.Tienda.buscar_producto("Manzana").Nombre);
         carrito.Add(fixture.Tienda.buscar_producto("Martillo").Nombre);
+        carrito.Add(fixture.Tienda.buscar_producto("Mesa").Nombre);
         carrito.Add(fixture.Tienda.buscar_producto("Kiwi").Nombre);
 
         fixture.Tienda.aplicar_descuento("Manzana", 20);
-        var totalEsperado = (1000 - 200) + 5000 + 700; // Precio de manzana (con descuento), martillo y kiwi
+        var totalEsperado = (1000 - 200) + 5000 + 5000 + 700; // Precio de manzana (con descuento), martillo y kiwi
         
         var total = fixture.Tienda.calcular_total_carrito(carrito);
         
@@ -104,15 +106,17 @@ public class TiendaTest : IClassFixture<TiendaFixture>
 
         // Estas dos lineas las puse porque dice que el test tiene que ser integrador
         // No se si esta bien ¿?
-        fixture.Tienda.agregar_producto(new("Puerta", 6000, "Mueble")); 
+        fixture.Tienda.agregar_producto(new("Puerta", 6000, "Mueble"));
+        fixture.Tienda.agregar_producto(new("Mesa", 5000, "Mueble"));
         fixture.Tienda.eliminar_producto("Puerta");
         // -----------------------
 
         carrito.Add(fixture.Tienda.buscar_producto("Manzana").Nombre);
         carrito.Add(fixture.Tienda.buscar_producto("Martillo").Nombre);
+        carrito.Add(fixture.Tienda.buscar_producto("Mesa").Nombre);
         carrito.Add(fixture.Tienda.buscar_producto("Kiwi").Nombre);
 
-        var totalEsperado = 1000 + 5000 + 700; // Precio de manzana, martillo y kiwi
+        var totalEsperado = 1000 + 5000 + 5000 + 700; // Precio de manzana, martillo y kiwi
         
         var total = fixture.Tienda.calcular_total_carrito(carrito);
         

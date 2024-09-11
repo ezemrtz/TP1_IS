@@ -37,9 +37,8 @@ public class Tienda{
         double total = 0;
         foreach (var nombreProducto in carrito)
         {
-            var producto = inventario.Find(p => p.Nombre == nombreProducto);
-            if (producto == null) throw new Exception("Producto inexistente");
-            total += producto.Precio;
+            var producto = buscar_producto(nombreProducto);
+            if (producto != null) total += producto.Precio;
         }
         return total;
     }
